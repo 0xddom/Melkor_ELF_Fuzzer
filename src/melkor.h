@@ -1,3 +1,6 @@
+#ifndef MELKOR_H
+#define MELKOR_H
+
 #include <elf.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -184,3 +187,5 @@ void fuzzAddrAlign(void);
 
 Elf_Addr get_d_ptr_by_d_tag(Elf_Sword);
 Elf_Word get_d_val_by_d_tag(Elf_Sword);
+
+#endif // !MELKOR_H
