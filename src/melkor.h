@@ -1,41 +1,40 @@
+#include <elf.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <elf.h>
 
 #define VERSION "v1.0"
 
-#define SWAP32(v) ((((v) & 0x000000ff) << 24) | \
-                   (((v) & 0x0000ff00) <<  8) | \
-                   (((v) & 0x00ff0000) >>  8) | \
-                   (((v) & 0xff000000) >> 24))
+#define SWAP32(v)                                                              \
+  ((((v) & 0x000000ff) << 24) | (((v) & 0x0000ff00) << 8) |                    \
+   (((v) & 0x00ff0000) >> 8) | (((v) & 0xff000000) >> 24))
 
 /* FUZZING MODES */
-#define	AUTO	(1 <<  0) // Autodetect (based on e_type)
-#define	HDR	(1 <<  1) // Elf Header
-#define	SHT	(1 <<  2) // Section Header Table
-#define	PHT	(1 <<  3) // Program Header Table
-#define	SYM	(1 <<  4) // Symbols Table
-#define DYN	(1 <<  5) // Dynamic info
-#define REL	(1 <<  6) // Relocation data
-#define NOTE	(1 <<  7) // Notes section
-#define STRS	(1 <<  8) // Strings in the file
-#define ALL	(HDR | SHT | PHT | SYM | DYN | REL | NOTE | STRS)
-#define ALLB	(SHT | PHT | SYM | DYN | REL | NOTE | STRS)
-
+#define AUTO (1 << 0) // Autodetect (based on e_type)
+#define HDR (1 << 1)  // Elf Header
+#define SHT (1 << 2)  // Section Header Table
+#define PHT (1 << 3)  // Program Header Table
+#define SYM (1 << 4)  // Symbols Table
+#define DYN (1 << 5)  // Dynamic info
+#define REL (1 << 6)  // Relocation data
+#define NOTE (1 << 7) // Notes section
+#define STRS (1 << 8) // Strings in the file
+#define ALL (HDR | SHT | PHT | SYM | DYN | REL | NOTE | STRS)
+#define ALLB (SHT | PHT | SYM | DYN | REL | NOTE | STRS)
 
 /* -DDEBUG was deleted from CFLAGS in Makefile.
    Add -DDEBUG if you want to print extra info.
 */
 #ifdef DEBUG
-#define debug(...) if(!quiet) printf(__VA_ARGS__)
+#define debug(...)                                                             \
+  if (!quiet)                                                                  \
+  printf(__VA_ARGS__)
 #else
 #define debug(...) //
 #endif
 
-
-/* Function pointer type 'func_ptr'. 
-   It will be used to create arrays of function pointers in fuzz_*.c 
+/* Function pointer type 'func_ptr'.
+   It will be used to create arrays of function pointers in fuzz_*.c
 */
 typedef int (*func_ptr)(void);
 
@@ -80,7 +79,7 @@ int PAGESIZE; // Set at runtime with getpagesize() in melkor.c
 
 /* ELF STUFF */
 /*** 32 - 64 BITS COMPAT ***/
-#if defined(__i386__)           /**** x86 ****/
+#if defined(__i386__)
 // Data Types
 #define Elf_Half Elf32_Half
 #define Elf_Word Elf32_Word
@@ -112,7 +111,7 @@ int PAGESIZE; // Set at runtime with getpagesize() in melkor.c
 
 #define HEX "%.8x"
 
-#elif defined(__x86_64__)       /**** x86_64 ****/
+#elif defined(__x86_64__) || defined(__aarch64__)
 // Data Types
 #define Elf_Half Elf64_Half
 #define Elf_Word Elf64_Word
@@ -144,14 +143,13 @@ int PAGESIZE; // Set at runtime with getpagesize() in melkor.c
 
 #define HEX "%.16lx"
 #else
-#error  "Unsupported arch !"
+#error "Unsupported arch !"
 #endif
-
 
 /* PROTOTYPES */
 void usage(const char *);
 void banner();
-int  elf_identification(int);
+int elf_identification(int);
 void verifySHT(void);
 void verifyPHT(void);
 
