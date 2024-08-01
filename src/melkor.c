@@ -302,11 +302,6 @@ int main(int argc, char **argv) {
   printf("[+] The Likelihood of execution of each rule is: ");
   printf("Aprox. %d %% (rand() %% %d < %d)\n\n", likelihood, like_a, like_b);
 
-  if (!quiet) {
-    printf("[+] Press any key to start the fuzzing process...\n");
-    getchar();
-  }
-
   chdir(dirname);
 
   logfp = start_logger(logfname, elfname);
