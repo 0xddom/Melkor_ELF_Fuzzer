@@ -149,6 +149,10 @@ extern int PAGESIZE; // Set at runtime with getpagesize() in melkor.c
 #error "Unsupported arch !"
 #endif
 
+#if defined(__aarch64__) && !defined(__x86_64__)
+#define __x86_64__
+#endif
+
 /* PROTOTYPES */
 void usage(const char *);
 void banner();
