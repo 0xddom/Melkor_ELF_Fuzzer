@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #define VERSION "v1.0"
 
@@ -41,7 +42,7 @@
 */
 typedef int (*func_ptr)(void);
 
-extern int PAGESIZE; // Set at runtime with getpagesize() in melkor.c
+#define PAGESIZE getpagesize()
 
 #ifndef PT_GNU_STACK
 #define PT_GNU_STACK 0x6474e551 // Indicates executable stack
