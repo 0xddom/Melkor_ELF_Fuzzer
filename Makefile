@@ -35,10 +35,6 @@ templ:
 	$(CC) $(CFLAGS) $(TEMPLFOO) $(TEMPLLIBFOO) -fstack-protector -z execstack -o $(TEMPL_SRC)/foo_stackprotector_execstack
 	$(CC) $(CFLAGS) $(TEMPLFOO) $(TEMPLLIBFOO) -static -o $(TEMPL_SRC)/foo_static
 	$(CC) $(CFLAGS) $(TEMPLLIBFOO) -c -fPIC -o $(TEMPL_SRC)/libfoo.o
-	$(CC) $(CFLAGS) $(TEMPL_SRC)/libfoo.o -shared -o $(TEMPL_SRC)/libfoo.so
-	$(CC) $(CFLAGS) $(TEMPLFOOLIBFOO) -L $(TEMPL_SRC) -lfoo -o $(TEMPL_SRC)/foo_libfoo
-	$(CC) $(CFLAGS) $(TEMPLFOODL1) -ldl -o $(TEMPL_SRC)/foo_dlopen
-	$(CC) $(CFLAGS) $(TEMPLFOODL2) -L $(TEMPL_SRC) -lfoo -o $(TEMPL_SRC)/foo_dl_iterate_phdr
 
 envtools:
 	$(CC) $(CFLAGS) $(SRC)/print_envp_vars.c -o $(SRC)/print_envp_vars
